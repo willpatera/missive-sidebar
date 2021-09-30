@@ -15,6 +15,7 @@
 <body>
   <script type="text/javascript">
     Missive.on('change:conversations', (ids) => {
+      reset();
       Missive.fetchConversations(ids).then((conversations) => {
         if (conversations.length != 1) {
           // Do nothing if multiple conversations are selected.
@@ -27,7 +28,8 @@
           return
         }
         
-        console.log(`conversation: ${ conversations[0]}`)
+        console.log(`conversation: ${ JSON.stringify(conversations[0]) }`)
+        console.log(`latest_message: ${ JSON.stringify(message) }`)
 
       })
     })
