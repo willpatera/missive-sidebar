@@ -13,18 +13,25 @@
 </head>
 
 <body>
-  <div id="component">
-    <span class="button button-async">
-      <span>Button</span>
-      <div class="loading-icon">
-        <i class="icon icon-circle" style="width: 24px; height: 24px;">
-          <svg style="width: 24px; height: 24px;">
-            <use xlink:href="#circle" />
-          </svg>
-        </i>
-      </div>
-    </span>
-  </div>
+  <script type="text/javascript">
+    Missive.on('change:conversations', (ids) => {
+      Missive.fetchConversations(ids).then((conversations) => {
+        if (conversations.length != 1) {
+          // Do nothing if multiple conversations are selected.
+          return
+        }
+        var message = conversations[0].latest_message
+        if (!message || !message.from_field) {
+          // Do nothing if conversation has no message (only chat comments) or if
+          // message has no From field.
+          return
+        }
+        
+        console.log(`conversation: ${ conversations[0]}`)
+
+      })
+    })
+  </script>
 </body>
 
 </html>
