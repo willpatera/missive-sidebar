@@ -15,7 +15,7 @@
 <body>
   <script type="text/javascript">
     const urlParams = new URLSearchParams(window.location.search);
-    const apiKey = (urlParams.has('key')) ? urlParams.get('key') : showError('Error: Missing Translate API Key');
+    const apiKey = (urlParams.has('key')) ? urlParams.get('key') : console.log("couldn't get key");
 
     Missive.on('change:conversations', (ids) => {
       Missive.fetchConversations(ids).then((conversations) => {
