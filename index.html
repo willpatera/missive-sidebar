@@ -41,7 +41,7 @@
           }
         });
 
-        xhr.open("POST", `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`);
+        xhr.open("POST", `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`, true);
         xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.send(JSON.stringify(data));
