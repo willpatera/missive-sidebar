@@ -14,6 +14,9 @@
 
 <body>
   <script type="text/javascript">
+    const urlParams = new URLSearchParams(window.location.search);
+    const apiKey = (urlParams.has('key')) ? urlParams.get('key') : showError('Error: Missing Translate API Key');
+
     Missive.on('change:conversations', (ids) => {
       Missive.fetchConversations(ids).then((conversations) => {
         if (conversations.length != 1) {
@@ -29,8 +32,23 @@
         
         console.log(`latest_message body: ${ JSON.stringify(message.body) }`)
 
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        var data = {"target": "en","q": message.body}
+        xhr.addEventListener("readystatechange", function() {
+          if(this.readyState === 4) {
+            console.log(this.responseText);
+          }
+        });
+
+        xhr.open("POST", `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.send(JSON.stringify(data));
       })
     })
+
+
   </script>
 </body>
 
