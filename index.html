@@ -13,6 +13,24 @@
 </head>
 
 <body>
+
+  <main class="padding content-grow content-vertical">
+    <div class="columns-center padding-small">
+      <span class="button button-async" id="translate-btn">
+        <span>
+          <span class="button-async-label">Translate</span>
+        </span>
+        <div class="loading-icon">
+          <i class="icon icon-circle" style="width: 24px; height: 24px;">
+            <svg style="width: 24px; height: 24px;">
+              <use xlink:href="#circle" />
+            </svg>
+          </i>
+        </div>
+      </span>
+    </div>
+  </main>
+
   <script type="text/javascript">
     const urlParams = new URLSearchParams(window.location.search);
     const apiKey = (urlParams.has('key')) ? urlParams.get('key') : console.log("couldn't get key");
@@ -21,7 +39,7 @@
     var message; 
 
     // translate button
-    const translate_button = document.getElementById("translate-btn");
+    var translate_button = document.getElementById("translate-btn");
 
     Missive.on('change:conversations', (ids) => {
       Missive.fetchConversations(ids).then((conversations) => {
@@ -74,26 +92,10 @@
           .catch(error => console.log('error', error));        
       }
     }
-
+    
+    translate_button.onclick = translate;
+  
   </script>
-
-  <main class="padding content-grow content-vertical">
-    <div class="columns-center padding-small">
-      <span class="button button-async" onclick="translate()">
-        <span>
-          <span id="translate-btn" class="button-async-label">Translate</span>
-        </span>
-        <div class="loading-icon">
-          <i class="icon icon-circle" style="width: 24px; height: 24px;">
-            <svg style="width: 24px; height: 24px;">
-              <use xlink:href="#circle" />
-            </svg>
-          </i>
-        </div>
-      </span>
-    </div>
-  </main>
-
 </body>
 
 </html>
