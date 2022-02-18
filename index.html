@@ -70,10 +70,13 @@
         
 
         console.log(`message.subject: ${ message.subject }\nmessage.body: ${ message.body }`);
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(message.body, "text/html");
+        const messageBodyStr = doc.documentElement.textContentj;
 
         var raw = {
           "target": "en",
-          "q": [message.subject, message.body]
+          "q": [message.subject, messageBodyStr]
         };
 
         var myHeaders = new Headers();
@@ -88,7 +91,14 @@
 
         fetch(`https://translation.googleapis.com/language/translate/v2?key=${apiKey}`, requestOptions)
           .then(response => response.text())
-          .then(result => console.log(result))
+          .then(result => {
+            console.log(result)
+            var subject = result.data.translations[0].translatedText;
+            var body = result.data.translations[1].translatedText;
+            var comment = `Subject: ${ subject }\nBody: ${ body }`;
+            Missive.comment( comment )
+            }
+            )
           .catch(error => console.log('error', error));        
       }
     }
