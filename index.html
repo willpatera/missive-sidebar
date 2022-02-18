@@ -30,15 +30,18 @@
           return
         }
         
-        var raw = JSON.stringify(message.body);
-        console.log(`latest_message body: ${ raw }`);
+        console.log(`latest_message body: ${ message.body }`);
+        var raw = {
+          "target": "en",
+          "q": message.body
+        };
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         var requestOptions = {
           method: 'POST',
           headers: myHeaders,
-          body: raw,
+          body: JSON.stringify(raw),
           redirect: 'follow',
           mode: 'cors'
         };
