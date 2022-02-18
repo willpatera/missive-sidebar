@@ -30,21 +30,23 @@
           return
         }
         
-        console.log(`latest_message body: ${ JSON.stringify(message.body) }`)
+        var raw = JSON.stringify(message.body);
+        console.log(`latest_message body: ${ raw }`);
 
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-        var data = {"target": "en","q": message.body}
-        xhr.addEventListener("readystatechange", function() {
-          if(this.readyState === 4) {
-            console.log(this.responseText);
-          }
-        });
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow',
+          mode: 'cors'
+        };
 
-        xhr.open("POST", `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.send(JSON.stringify(data));
+        fetch(`https://translation.googleapis.com/language/translate/v2?key=${apiKey}`, requestOptions)
+          .then(response => response.text())
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error));
       })
     })
 
