@@ -13,9 +13,33 @@
 </head>
 
 <body>
+  
+  <main class="padding content-grow content-vertical">
+    <div class="columns-center padding-small">
+      <span class="button button-async" onclick="translate()">
+        <span>
+          <span id="translate-btn" class="button-async-label">Translate</span>
+        </span>
+        <div class="loading-icon">
+          <i class="icon icon-circle" style="width: 24px; height: 24px;">
+            <svg style="width: 24px; height: 24px;">
+              <use xlink:href="#circle" />
+            </svg>
+          </i>
+        </div>
+      </span>
+    </div>
+  </main>
+
   <script type="text/javascript">
     const urlParams = new URLSearchParams(window.location.search);
     const apiKey = (urlParams.has('key')) ? urlParams.get('key') : console.log("couldn't get key");
+
+    // current message object in missive app
+    var message; 
+
+    // translate button
+    const translate_button = document.getElementById("translate-btn");
 
     Missive.on('change:conversations', (ids) => {
       Missive.fetchConversations(ids).then((conversations) => {
@@ -23,17 +47,33 @@
           // Do nothing if multiple conversations are selected.
           return
         }
+
         var message = conversations[0].latest_message
         if (!message || !message.from_field) {
           // Do nothing if conversation has no message (only chat comments) or if
           // message has no From field.
           return
         }
+      })
+    })
+
+
+    async function translate(){
+      if (message.body) {
+
+        // don't send quoted replies to get translated
+        var quote = message.body.indexOf('<div class=\"missive_quote\"><blockquote');
+        if (quote > -1)
+        {
+          message.body = message.body.substring(0, quote);
+        }
         
-        console.log(`latest_message body: ${ message.body }`);
+
+        console.log(`message.subject: ${ message.subject }\nmessage.body: ${ message.body }`);
+
         var raw = {
           "target": "en",
-          "q": message.body
+          "q": [message.subject, message.body]
         };
 
         var myHeaders = new Headers();
@@ -49,10 +89,9 @@
         fetch(`https://translation.googleapis.com/language/translate/v2?key=${apiKey}`, requestOptions)
           .then(response => response.text())
           .then(result => console.log(result))
-          .catch(error => console.log('error', error));
-      })
-    })
-
+          .catch(error => console.log('error', error));        
+      }
+    }
 
   </script>
 </body>
