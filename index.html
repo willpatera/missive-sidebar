@@ -13,6 +13,24 @@
 </head>
 
 <body>
+
+  <main class="padding content-grow content-vertical">
+    <div class="columns-center padding-small">
+      <span class="button button-async" onclick="translate()">
+        <span>
+          <span id="translate-btn" class="button-async-label">Translate</span>
+        </span>
+        <div class="loading-icon">
+          <i class="icon icon-circle" style="width: 24px; height: 24px;">
+            <svg style="width: 24px; height: 24px;">
+              <use xlink:href="#circle" />
+            </svg>
+          </i>
+        </div>
+      </span>
+    </div>
+  </main>
+
   <script type="text/javascript">
     const urlParams = new URLSearchParams(window.location.search);
     const apiKey = (urlParams.has('key')) ? urlParams.get('key') : console.log("couldn't get key");
@@ -40,7 +58,7 @@
     })
 
 
-    async function translate(){
+    function translate(){
       if (message.body) {
 
         // don't send quoted replies to get translated
@@ -76,23 +94,6 @@
     }
 
   </script>
-
-  <main class="padding content-grow content-vertical">
-    <div class="columns-center padding-small">
-      <span class="button button-async" onclick="translate()">
-        <span>
-          <span id="translate-btn" class="button-async-label">Translate</span>
-        </span>
-        <div class="loading-icon">
-          <i class="icon icon-circle" style="width: 24px; height: 24px;">
-            <svg style="width: 24px; height: 24px;">
-              <use xlink:href="#circle" />
-            </svg>
-          </i>
-        </div>
-      </span>
-    </div>
-  </main>
 </body>
 
 </html>
