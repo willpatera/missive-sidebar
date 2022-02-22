@@ -72,7 +72,8 @@
         console.log(`message.subject: ${ message.subject }\nmessage.body: ${ message.body }`);
         const parser = new DOMParser();
         const doc = parser.parseFromString(message.body, "text/html");
-        const messageBodyStr = doc.documentElement.textContentj;
+        const messageBodyStr = doc.documentElement.textContent;
+        console.log(`messageBodyStr: ${ messageBodyStr }`);
 
         var raw = {
           "target": "en",
@@ -93,8 +94,8 @@
           .then(response => response.text())
           .then(result => {
             console.log(result)
-            var subject = result.data.translations[0].translatedText;
-            var body = result.data.translations[1].translatedText;
+            var subject = result['data']['translations'][0]['translatedText'];
+            var body = result['data']['translations'][1]['translatedText'];
             var comment = `Subject: ${ subject }\nBody: ${ body }`;
             Missive.comment( comment )
             }
