@@ -91,7 +91,7 @@
         };
 
         fetch(`https://translation.googleapis.com/language/translate/v2?key=${apiKey}`, requestOptions)
-          .then(response => response.text())
+          .then(response => response.json())
           .then(result => {
             console.log(result)
             var subject = result['data']['translations'][0]['translatedText'];
